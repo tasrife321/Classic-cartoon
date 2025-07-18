@@ -29,24 +29,28 @@
     <option value="English">English</option>
     <option value="Hindi">Hindi</option>
   </select>
-  <div class="video-grid" id="videoList">
-    <div class="video-card" data-title="Popeye classic cartoon episode 1" data-category="Popeye cartoon" data-language="">
-      <video controls src="https://files.catbox.moe/n7ce1o.mp4"></video>
-      <div class="meta">Language: Unknown | Rating: ⭐ 4.5 | Category: Popeye cartoon</div>
-    </div>
-    <div class="video-card" data-title="Tom & Jerry fanny carton Episode 1" data-category="Tom & Jerry" data-language="Hindi">
-      <video controls src="https://files.catbox.moe/2gf8nr.mp4"></video>
-      <div class="meta">Language: Hindi | Rating: ⭐ 5 | Category: Tom & Jerry</div>
-    </div>
-    <div class="video-card" data-title="Looney tunes fanny cartoon episode 1" data-category="Looney tunes" data-language="English">
-      <video controls src="https://files.catbox.moe/zo5fiu.mp4"></video>
-      <div class="meta">Language: English | Rating: ⭐ 5 | Category: Looney tunes</div>
-    </div>
-    <div class="video-card" data-title="Classic cartoon fox episode 1" data-category="Fox cartoon" data-language="English">
-      <video controls src="https://files.catbox.moe/9c0dw4.mp4"></video>
-      <div class="meta">Language: English | Rating: ⭐ 4 | Category: Fox cartoon</div>
-    </div>
-  </div>
+  <script>
+fetch('videos.json')
+  .then(response => response.json())
+  .then(videos => {
+    const videoList = document.getElementById('videoList');
+    videos.forEach(video => {
+      const card = document.createElement('div');
+      card.className = 'video-card';
+      card.setAttribute('data-title', video.title.toLowerCase());
+      card.setAttribute('data-category', video.category);
+      card.setAttribute('data-language', video.language);
+
+      card.innerHTML = `
+        <video controls src="${video.videoUrl}"></video>
+        <div class="meta">
+          Language: ${video.language} | Rating: ⭐ ${video.rating} | Category: ${video.category}
+        </div>
+      `;
+      videoList.appendChild(card);
+    });
+  });
+  </script>
   <script>
     function filterVideos() {
       const search = document.getElementById("search").value.toLowerCase();
