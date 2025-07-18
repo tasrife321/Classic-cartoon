@@ -28,30 +28,55 @@
     <option value="">All Languages</option>
     <option value="English">English</option>
     <option value="Hindi">Hindi</option>
-  </select>
- 
-fetch('videos.json')
-  .then(response => response.json())
-  .then(videos => {
-    const videoList = document.getElementById('videoList');
-    videos.forEach(video => {
-      const card = document.createElement('div');
-      card.className = 'video-card';
-      card.setAttribute('data-title', video.title.toLowerCase());
-      card.setAttribute('data-category', video.category);
-      card.setAttribute('data-language', video.language);
-
-      card.innerHTML = `
-        <video controls src="${video.videoUrl}"></video>
-        <div class="meta">
-          Language: ${video.language} | Rating: ⭐ ${video.rating} | Category: ${video.category}
-        </div>
-      `;
-      videoList.appendChild(card);
-    });
-  });
+  </select> 
+<div id="videolist" class="video-grid"></div>
   </script>
-  
+<script>
+  async function loadVideos() {
+    const response = await fetch('videos.json');
+    const videos = await response.json();
+
+    const videoList = document.getElementById('videolist');
+    videoList.innerHTML = ''; // পুরানো ভিডিও গুলো clear করে
+
+    videos.forEach(video => {
+      const div = document.createElement('div');
+      div.className = 'video-card';
+      div.setAttribute('data-title', video.title);
+      div.setAttribute('data-category', video.category);
+      div.setAttribute('data-language', video.language);
+
+      div.innerHTML = `
+        <video controls src="${video.videoUrl}"></video>
+        <div class="meta">Language: ${video.language} | Rating: ⭐ ${video.rating} | Category: ${video.category}</div>
+      `;
+
+      videoList.appendChild(div);
+    });
+  }
+
+  function filterVideos() {
+    const search = document.getElementById("search").value.toLowerCase();
+    const category = document.getElementById("categoryFilter").value;
+    const language = document.getElementById("languageFilter").value;
+    const cards = document.querySelectorAll(".video-card");
+
+    cards.forEach(card => {
+      const title = card.dataset.title.toLowerCase();
+      const cardCategory = card.dataset.category;
+      const cardLanguage = card.dataset.language;
+
+      const matchesSearch = title.includes(search);
+      const matchesCategory = category === "" || cardCategory === category;
+      const matchesLanguage = language === "" || cardLanguage === language;
+
+      card.style.display = (matchesSearch && matchesCategory && matchesLanguage) ? "block" : "none";
+    });
+  }
+
+  // Call when page loads
+  window.onload = loadVideos;
+</script>  
     function filterVideos() {
       const search = document.getElementById("search").value.toLowerCase();
       const category = document.getElementById("categoryFilter").value;
