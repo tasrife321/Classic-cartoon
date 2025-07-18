@@ -32,31 +32,7 @@
       <video controls src="https://files.catbox.moe/9c0dw4.mp4"></video>
       <div class="meta">Language: English | Rating: ⭐ 4 | Category: Fox cartoon</div>
     </div>
-</div>  
-<script>
-fetch('videos.json')
-  .then(response => response.json())
-  .then(videos => {
-    const videoList = document.getElementById('videoList');
-    videos.forEach(video => {
-      const card = document.createElement('div');
-      card.className = 'video-card';
-      card.setAttribute('data-title', video.title.toLowerCase());
-      card.setAttribute('data-category', video.category);
-      card.setAttribute('data-language', video.language);
-
-      card.innerHTML = `
-        <video controls src="${video.videoUrl}"></video>
-        <div class="meta">
-          Language: ${video.language} | Rating: ⭐ ${video.rating} | Category: ${video.category}
-        </div>
-      `;
-      videoList.appendChild(card);
-    });
-  });
-</script> 
-
-  <h1>Classic Cartoon Gallery by Tasrife Ahmed</h1>
+</script>  <h1>Classic Cartoon Gallery by Tasrife Ahmed</h1>
   <input type="text" id="search" placeholder="Search by title..." onkeyup="filterVideos()"/>
   <select id="categoryFilter" onchange="filterVideos()">
     <option value="">All Categories</option>
